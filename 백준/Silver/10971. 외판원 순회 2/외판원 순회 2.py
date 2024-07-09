@@ -1,5 +1,3 @@
-import sys
-
 def TSP(start, now, sum, cnt):
     global ans
     if cnt == n:
@@ -11,6 +9,7 @@ def TSP(start, now, sum, cnt):
             flag[i] = True
             TSP(start, i, sum + W[now][i], cnt + 1)
             flag[i] = False
+
 
 n = int(input())
 W = []
