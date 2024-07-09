@@ -4,7 +4,7 @@ def TSP(start, now, sum, cnt):
     global ans
     if cnt == n:
         if W[now][start]:
-            if sum + W[now][start] < ans:
+            if ans == 0 or sum + W[now][start] < ans:
                 ans = sum + W[now][start]
     for i in range(n):
         if not flag[i] and W[now][i]:
@@ -18,7 +18,7 @@ for i in range(n):
     W.append(list(map(int, input().split())))
 
 flag = [False] * n
-ans = sys.maxsize
+ans = 0
 
 for i in range(n):
     flag[i] = True
