@@ -1,10 +1,7 @@
-import math
-
-
 def solution(brown, yellow):
     answer = []
 
-    temp = int(math.sqrt(yellow))
+    temp = int(yellow**(0.5))
     while temp>0:
         if yellow % temp == 0:
             quo = yellow // temp
