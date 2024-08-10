@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
-#include <algorithm>
 #include <limits>
+#include <algorithm>
 
 using namespace std;
 
@@ -24,18 +24,28 @@ int solution(int n, vector<vector<int>> edge)
 {
     vector<vector<int>> node(n + 1);
 
-    for (const auto& e : edge)
+    for (const auto &e : edge)
     {
-        node[e[0]].push_back(e[1]);
-        node[e[1]].push_back(e[0]);
+        if (e[0] <= n && e[1] <= n) {  // 유효성 검사 추가
+            node[e[0]].push_back(e[1]);
+            node[e[1]].push_back(e[0]);
+        }
     }
 
-    vector<int> visit_and_cnt(n + 1, numeric_limits<int>::max());
+    vector<int> visit_and_cnt(n + 1, 2147483647);
 
     dfs(1, node, visit_and_cnt, 0);
 
-    int max_value = *max_element(visit_and_cnt.begin() + 1, visit_and_cnt.end());
-    int answer = count(visit_and_cnt.begin() + 1, visit_and_cnt.end(), max_value);
+    int max_value = *(max_element(visit_and_cnt.begin() + 1, visit_and_cnt.end()));
+
+    int answer = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        if (visit_and_cnt[i] == max_value)
+        {
+            answer++;
+        }
+    }
 
     return answer;
 }
