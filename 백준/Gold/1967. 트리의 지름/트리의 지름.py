@@ -3,21 +3,24 @@ import sys
 input = sys.stdin.readline
 sys.setrecursionlimit(10**8)
 
+def dfs(idx, parent):
+    for i in range(len(info[idx])):
+        next_node = info[idx][i][0]
+        cost = info[idx][i][1]
 
-def dfs(idx, parent, sum) -> tuple:
-    max_cost = sum
-    max_idx = idx
-
-    for next_idx, cost in info[idx]:
-        if next_idx == parent:
+        if next_node == parent:
             continue
 
-        temp_idx, temp_cost = dfs(next_idx, idx, sum + cost)
-        if max_cost < temp_cost:
-            max_cost = temp_cost
-            max_idx = temp_idx
+        temp = dfs(next_node, idx) + cost
 
-    return max_idx, max_cost
+        # 첫 번째로 큰 값과 두 번째로 큰 값 업데이트
+        if temp > dp[idx][0]:
+            dp[idx][1] = dp[idx][0]
+            dp[idx][0] = temp
+        elif temp > dp[idx][1]:
+            dp[idx][1] = temp
+
+    return dp[idx][0]
 
 
 if __name__ == "__main__":
@@ -30,8 +33,14 @@ if __name__ == "__main__":
         info[pa].append([ch, cost])
         info[ch].append([pa, cost])
 
-    long_idx, _ = dfs(1, -1, 0)
+    dp = [[0, 0] for _ in range(N + 1)]
 
-    _, max_val = dfs(long_idx, -1, 0)
+    dfs(1, -1)
+
+    max_val = 0
+    for i in range(1, N + 1):
+        sum = dp[i][0] + dp[i][1]
+        if sum > max_val:
+            max_val = sum
 
     print(max_val)
