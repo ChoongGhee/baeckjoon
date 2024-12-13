@@ -18,6 +18,9 @@ def dijkstra(start:int, end:int)->int:
     while hq:
         cur_cost, cur = heapq.heappop(hq)
 
+        if cur == end:
+            return cur_cost
+        
         if cur_cost > costs[cur]:
             continue
 
