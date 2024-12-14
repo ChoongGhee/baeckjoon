@@ -1,44 +1,38 @@
 import sys
-
+import heapq
 input = sys.stdin.readline
 
+def main():
+    V, E = map(int, input().split())
+    info = [[] for _ in range(V+1)]
 
-def find(parents_table, x) -> int:
-    if parents_table[x] != x:
-        parents_table[x] = find(parents_table, parents_table[x])
-    return parents_table[x]
+    for _ in range(E):
+        A, B, C = map(int, input().split())
+        info[A].append([B, C])
+        info[B].append([A, C])
 
+    visi = [False] * (V + 1)
+    visi[1] = True
 
-def union(parents_table, a, b):
-    a = find(parents_table, a)
-    b = find(parents_table, b)
-    if a < b:
-        parents_table[b] = a
-    else:
-        parents_table[a] = b
+    hq = []
+    for next_node, cost in info[1]:
+        heapq.heappush(hq, [cost, next_node])
 
+    total = 0
 
-V, E = map(int, input().split())
+    while hq:
+        cur_cost, cur_node = heapq.heappop(hq)
 
-cost_arr = []
+        if visi[cur_node] == True:
+            continue
+        
+        visi[cur_node] = True
+        
+        total += cur_cost
+        for next_node, cost in info[cur_node]:
+            if visi[next_node] == False:
+                heapq.heappush(hq, [cost, next_node])
 
-for _ in range(E):
-    a, b, c = map(int, input().split())
-    cost_arr.append([c, a, b])
+    print(total)
 
-
-cost_arr.sort()
-parents_table = [0] * (V + 1)
-for i in range(1, V + 1):
-    parents_table[i] = i
-
-total_cost = 0
-
-for i in range(E):
-    cost, a, b = cost_arr[i]
-
-    if find(parents_table, a) != find(parents_table, b):
-        union(parents_table, a, b)
-        total_cost += cost
-
-print(total_cost)
+main()
