@@ -4,7 +4,7 @@ import time
 total = 0
 cnt = 0
 N = int(sys.stdin.readline())
-end_time = time.perf_counter() + 0.15
+end_time = time.perf_counter() + 0.2
 
 try:
    while cnt < N and time.perf_counter() < end_time:
